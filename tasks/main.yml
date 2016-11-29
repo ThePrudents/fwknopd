@@ -1,0 +1,4 @@
+---
+  ### Role tasks
+
+  - include: fwknopd.yml
