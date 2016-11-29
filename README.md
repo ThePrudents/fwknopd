@@ -16,7 +16,13 @@ Configuration:
 Simple usage:
 
 ```YAML
-  ### TODO: Place configuration example here
+---
+- hosts: all
+
+  roles:
+    - {
+        role: "theprudents.fwknopd"
+      }
 ```
 
 
