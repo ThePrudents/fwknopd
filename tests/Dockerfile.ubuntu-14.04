@@ -1,0 +1,24 @@
+FROM ubuntu:14.04
+
+### Upgrade distribution to the latest
+RUN apt-get update
+RUN apt-get dist-upgrade -y
+
+### Install ansible
+# Install repositories info
+RUN apt-get install -y software-properties-common
+
+# Install common packages
+RUN apt-get install -y apt-transport-https git wget libffi-dev libssl-dev
+
+# Install python prerequisites
+RUN apt-get install -y python-dev python-pip
+RUN pip install -U pip
+RUN pip install ansible
+
+# Resolve setuptools conflict
+RUN wget -O - https://bootstrap.pypa.io/ez_setup.py |python
+
+# Create ansible inventory file
+RUN mkdir -p /etc/ansible
+RUN echo "[local]\nlocalhost ansible_connection=local" > /etc/ansible/hosts
