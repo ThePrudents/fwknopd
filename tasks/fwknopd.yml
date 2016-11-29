@@ -1,12 +1,19 @@
 ---
-  - name: fwknopd | Check if is installed
+  - name: fwknopd | Install | Check if 'fwknopd' is installed
     command: test -x /usr/sbin/fwknopd
     register: fwknopd_present
     ignore_errors: yes
     tags:
       - fwknopd
 
-  - name: iptables-persistent | Check if is installed
+  - name: fwknopd | Install | Install 'fwknopd' package
+    apt: pkg=fwknop-server state=present
+    when: fwknopd_present | failed
+    become: yes
+    tags:
+      - fwknopd
+
+  - name: fwknopd | Install | Check if 'iptables-persistent' is installed
     command: test -x /etc/init.d/iptables-persistent
     register: iptablespersistent_present
     ignore_errors: yes
@@ -14,63 +21,18 @@
       - fwknopd
       - iptables-persistent
 
-  - name: fwknopd | Install
-    apt: force=yes state=present pkg=fwknop-server
-    when: ansible_os_family == "Debian" and fwknopd_present|failed
-    become: yes
-    tags:
-      - fwknopd
+  - block:
+    - name: fwknopd | Install | iptables-persistent | Answer install dialog questions
+      debconf: name=iptables-persistent question={{item}} vtype=boolean value=true
+      with_items:
+        - iptables-persistent/autosave_v4
+        - iptables-persistent/autosave_v6
 
-  - name: iptables | Copy iptables script
-    template: src={{root_dir}}/components/templates/jmp/iptables.sh.j2 dest=/tmp/iptables.sh mode=0755 force=yes
-    tags:
-      - fwknopd
-      - iptables
+    - name: fwknopd | Install | iptables-persistent | Install package
+      apt: name=iptables-persistent state=present
 
-  - name: iptables | Create firewall rules
-    shell: "/tmp/iptables.sh"
-    register: iptables_output
-    become: yes
-    tags:
-      - fwknopd
-      - iptables
-
-  - name: iptables | Remove iptables script
-    file: path="/tmp/iptables.sh" state=absent
-    tags:
-      - fwknopd
-      - iptables
-
-  - name: iptables-persistent | Answer install dialog questions
-    debconf: name=iptables-persistent question={{item}} vtype=boolean value=true
-    with_items:
-      - iptables-persistent/autosave_v4
-      - iptables-persistent/autosave_v6
-    when: ansible_os_family == "Debian" and iptablespersistent_present|failed
+    when: iptablespersistent_present | failed
     become: yes
     tags:
       - fwknopd
       - iptables-persistent
-
-  - name: iptables-persistent | Install package
-    apt: name=iptables-persistent state=present
-    when: ansible_os_family == "Debian" and iptablespersistent_present|failed
-    become: yes
-    tags:
-      - fwknopd
-      - iptables-persistent
-
-  - name: iptables-persistent | Save rules when package exists
-    shell: "service iptables-persistent save"
-    when: ansible_os_family == "Debian" and not iptablespersistent_present|failed
-    become: yes
-    tags:
-      - fwknopd
-      - iptables-persistent
-
-  - name: fwknopd | Restart
-    service: name=fwknop-server state=restarted
-    when: fwknopd_present|failed
-    become: yes
-    tags:
-      - fwknopd
