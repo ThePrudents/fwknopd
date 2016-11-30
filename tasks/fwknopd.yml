@@ -13,6 +13,12 @@
     tags:
       - fwknopd
 
+  - name: fwknopd | Setup | Create access conf file
+    template: src=access.conf.j2 dest=/etc/fwknop/access.conf owner=root group=root mode=0600
+    become: yes
+    tags:
+      - fwknopd
+
   - name: fwknopd | Install | Check if 'iptables-persistent' is installed
     command: test -x /etc/init.d/iptables-persistent
     register: iptablespersistent_present
