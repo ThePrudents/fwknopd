@@ -1,2 +1,4 @@
 ---
   ### Role handlers
+- name: fwknopd restart
+  service: name=fwknop-server state=restarted
