@@ -13,8 +13,13 @@
     tags:
       - fwknopd
 
+  - name: fknopd | Setup | Define users
+    set_fact:
+      users: "{{ users | default({}) }}"
+
   - name: fwknopd | Setup | Create access conf file
     template: src=access.conf.j2 dest=/etc/fwknop/access.conf owner=root group=root mode=0600
+    when: users | length > 0
     become: yes
     notify: fwknopd restart
     tags:
