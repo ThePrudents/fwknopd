@@ -27,13 +27,11 @@ Simple usage:
   roles:
     - {
         role: "theprudents.fwknopd"
+        users:
+          sample_user:
+            key_base64: "YOUR_GENERATED_KEY"
+            hmac_base64: "YOUR_GENERATED_HMCA_KEY"
       }
-
-  vars:
-    users:
-      sample_user:
-        key_base64: "YOUR_GENERATED_KEY"
-        hmac_base64: "YOUR_GENERATED_HMCA_KEY"
 ```
 
 
