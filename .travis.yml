@@ -7,8 +7,6 @@
       init: /sbin/init
       run_opts: ''
       playbook: travis_test_with_users.yml
-
-  env:
     - distribution: ubuntu
       version: 14.04
       init: /sbin/init
