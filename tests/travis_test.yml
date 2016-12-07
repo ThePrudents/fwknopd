@@ -6,9 +6,3 @@
         role: "role_under_test",
         docker_test: true
       }
-
-  vars:
-    users:
-      test:
-        key_base64: "test"
-        hmac_base64: "hmac"
