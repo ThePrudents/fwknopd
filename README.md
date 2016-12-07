@@ -17,7 +17,6 @@ users:
     fw_access_timeout: 30 # OPTIONAL
 ```
 
-
 Simple usage:
 
 ```YAML

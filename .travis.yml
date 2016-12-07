@@ -8,7 +8,6 @@
       run_opts: ''
       playbook: travis_test.yml
 
-
   branches:
     only:
       - master
