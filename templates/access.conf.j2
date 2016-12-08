@@ -1,0 +1,10 @@
+{% for user, value in users.iteritems() %}
+SOURCE                  ANY
+REQUIRE_USERNAME        {{ user }}
+{% if value.fw_access_timeout is defined %}
+FW_ACCESS_TIMEOUT       {{ value.fw_access_timeout }}
+{% endif %}
+KEY_BASE64              {{ value.key_base64 }}
+HMAC_KEY_BASE64         {{ value.hmac_base64 }}
+
+{% endfor %}

@@ -10,7 +10,11 @@ Usage
 
 Configuration:
 ```YAML
-  ### TODO: Place configuration example here
+users:
+  sample_user:
+    key_base64: "YOUR_GENERATED_KEY"
+    hmac_base64: "YOUR_GENERATED_HMCA_KEY"
+    fw_access_timeout: 30 # OPTIONAL
 ```
 
 Simple usage:
@@ -22,6 +26,10 @@ Simple usage:
   roles:
     - {
         role: "theprudents.fwknopd"
+        users:
+          sample_user:
+            key_base64: "YOUR_GENERATED_KEY"
+            hmac_base64: "YOUR_GENERATED_HMCA_KEY"
       }
 ```
 
