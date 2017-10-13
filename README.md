@@ -44,4 +44,4 @@ Advanced usage:
 Copyright and license
 ---------------------
 
-Code licensed under the [MIT License] (http://opensource.org/licenses/MIT).
+Code licensed under the [MIT License](http://opensource.org/licenses/MIT).
